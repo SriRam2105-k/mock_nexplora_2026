@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXPLORA — Explore the Next. Build the Future.</title>
+
+  <!--
+    NEXPLORA Hackathon — NPRCET
+    Theme   : White & Gold / Minimal Luxury
+    Fonts   : Cormorant Garamond (display) + Outfit (body)
+    Motion  : GSAP + ScrollTrigger — slow, cinematic reveals
+    Stack   : HTML · CSS · Tailwind CDN · Bootstrap CDN · GSAP CDN
+  -->
+
+  <!-- Google Fonts: Cormorant Garamond (display) + Outfit (body) + JetBrains Mono (data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
+  <!-- GSAP + ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════ */
+    :root {
+      /* NPR Logo Colors - Kept for reference but theme uses Lavender */
+      --npr-navy: #234189;
+      --npr-gold: #FFCB06;
+      --npr-bg: #FAF5FF;
+      /* Lavender White */
+      --npr-light-blue: #E9D5FF;
+      /* Light Lavender */
+
+      /* Lavender Background Base */
+      --sky-blue: #FAF5FF;
+      /* Soft Lavender Highlights */
+      --light-cyan: #F3E8FF;
+      /* Deep Purple Headings */
+      --navy-heading: #4B2393;
+
+      /* Vibrant Purple (Main Titles) */
+      --golden-yellow: #7C3AED;
+      /* Soft Lavender (Buttons / Secondary) */
+      --warm-orange: #8B5CF6;
+      /* Pale Lavender (Highlights) */
+      --soft-peach: #F3E8FF;
+
+      /* Pure White (Cards / Boxes) */
+      --dark-slate: #FFFFFF;
+      /* Lavender Border */
+      --steel-blue: #DDD6FE;
+      /* Very Light Gray/Lavender (Card Backgrounds) */
+      --light-gray: #F9FAFB;
+
+      /* White Pure */
+      --bg-white: #FFFFFF;
+      /* Deep Charcoal (Body Text) */
+      --charcoal: #1F2937;
+      /* Muted Gray (Subtext) */
+      --soft-gray: #6B7280;
+
+      /* Mapping aliases for the HTML references */
+      --gold: var(--golden-yellow);
+      --gold-light: var(--warm-orange);
+      --gold-pale: var(--soft-peach);
+      --gold-dim: rgba(124, 58, 237, 0.1);
+
+      --ink: var(--sky-blue);
+      --ink-soft: var(--dark-slate);
+
+      --ash: var(--soft-gray);
+      --silver: var(--charcoal);
+      --mist: var(--soft-gray);
+
+      --white: var(--navy-heading);
+      --white-dim: var(--soft-gray);
+      --white-border: var(--steel-blue);
+
+      --gold-glow: 0 0 25px rgba(124, 58, 237, 0.25);
+      --gold-glow-sm: 0 0 12px rgba(124, 58, 237, 0.15);
+    }
+
+    /* ═══════════════════════════════════════════════
+       GLOBAL
+    ═══════════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--ink);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════════════════════
+       PREMIUM GLASS ORBS
+    ═══════════════════════════════════════════════ */
+    .glass-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(124, 58, 237, 0.25));
+      backdrop-filter: blur(60px);
+      -webkit-backdrop-filter: blur(60px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      /* Multi-layered depth: light highlight + shadow falloff + drop shadow */
+      box-shadow:
+        0 40px 80px rgba(124, 58, 237, 0.1),
+        inset -5px -5px 30px rgba(124, 58, 237, 0.2),
+        inset 10px 10px 40px rgba(255, 255, 255, 0.8);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 350px;
+      height: 350px;
+      top: 12%;
+      right: -80px;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      top: 45%;
+      left: -150px;
+    }
+
+    .orb-3 {
+      width: 250px;
+      height: 250px;
+      top: 78%;
+      right: 8%;
+      opacity: 0.8;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCROLL PROGRESS
+    ═══════════════════════════════════════════════ */
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      z-index: 10000;
+      box-shadow: var(--gold-glow-sm);
+      transition: width .1s linear;
+    }
+
+    /* ═══════════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9000;
+      padding: 26px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: padding .5s ease, background .5s ease, border-color .5s ease;
+    }
+
+    #nav.compact {
+      padding: 15px 60px;
+      background: rgba(250, 245, 255, .8);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid rgba(35, 65, 137, .1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    }
+
+    .nav-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: 6px;
+      color: var(--navy-heading);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: var(--silver);
+      text-decoration: none;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      transition: color .4s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-orange);
+    }
+
+    .nav-cta {
+      padding: 9px 24px !important;
+      border: 1px solid var(--warm-orange) !important;
+      border-radius: 2px !important;
+      color: var(--warm-orange) !important;
+      display: inline-block;
+      transition: all 0.4s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--warm-orange) !important;
+      border-color: var(--warm-orange) !important;
+      color: var(--bg-white) !important;
+      box-shadow: 0 0 15px rgba(255, 203, 6, 0.2);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--white);
+      transition: all .4s ease;
+    }
+
+    .mob-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(250, 245, 255, .98);
+      backdrop-filter: blur(30px);
+      z-index: 8999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+
+    .mob-menu.open {
+      display: flex;
+    }
+
+    .mob-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      text-decoration: none;
+      letter-spacing: 4px;
+      transition: color .3s ease;
+    }
+
+    .mob-menu a:hover {
+      color: var(--warm-orange);
+    }
+
+    .mob-close {
+      position: absolute;
+      top: 28px;
+      right: 40px;
+      font-size: 1.8rem;
+      color: var(--silver);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color .3s;
+    }
+
+    .mob-close:hover {
+      color: var(--warm-orange);
+    }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    #hero {
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* Fine horizontal rule lines — editorial depth */
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 79px,
+          rgba(124, 58, 237, .05) 80px);
+    }
+
+    .hero-decor {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      user-select: none;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.25;
+      filter: blur(4px) brightness(1.2);
+    }
+
+    .hero-decor img {
+      width: clamp(300px, 45vw, 600px);
+      height: auto;
+      display: block;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 880px;
+    }
+
+    /* Eyebrow */
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .ey-line {
+      width: 44px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .ey-line.r {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .ey-text {
+      font-size: .67rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--warm-orange);
+      font-weight: 500;
+    }
+
+    /* Main title */
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: clamp(4.2rem, 11vw, 10.5rem);
+      line-height: .92;
+      letter-spacing: -2px;
+      color: var(--golden-yellow);
+      margin-bottom: 26px;
+      text-shadow: 0 4px 15px rgba(27, 58, 87, 0.1);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--gold-light), #DAA520, var(--gold-pale));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    /* Rule */
+    .hero-rule {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), transparent);
+      margin: 0 auto 26px;
+    }
+
+    /* Subtitle */
+    .hero-sub {
+      font-size: clamp(.78rem, 1.8vw, .98rem);
+      font-weight: 400;
+      color: var(--silver);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+
+    /* CTA */
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 44px;
+      border: 1px solid var(--warm-orange);
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--warm-orange);
+      font-family: 'Outfit', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      transition: color .5s ease, background .5s ease, border-color .5s ease, box-shadow .5s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .btn-gold::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--warm-orange);
+      z-index: -1;
+      transition: left .5s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .btn-gold:hover::before {
+      left: 0;
+    }
+
+    .btn-gold:hover {
+      color: var(--bg-white);
+      border-color: var(--warm-orange);
+      box-shadow: var(--gold-glow);
+    }
+
+    .arrow-long {
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      position: relative;
+      transition: width .4s ease;
+    }
+
+    .arrow-long::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid currentColor;
+      border-top: 1px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .btn-gold:hover .arrow-long {
+      width: 40px;
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sc-label {
+      font-size: .6rem;
+      letter-spacing: 3px;
+      color: var(--mist);
+      text-transform: uppercase;
+    }
+
+    .sc-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scaleY(1);
+        opacity: .7;
+      }
+
+      50% {
+        transform: scaleY(.5);
+        opacity: .3;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SHARED SECTION STYLES
+    ═══════════════════════════════════════════════ */
+    section {
+      padding: 120px 60px;
+      position: relative;
+    }
+
+    .sep {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124, 58, 237, .1), transparent);
+    }
+
+    .sec-eye {
+      font-size: .64rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--warm-orange);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .sec-eye::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--warm-orange);
+    }
+
+    .sec-h {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.06;
+      color: var(--navy-heading);
+      margin-bottom: 18px;
+    }
+
+    .sec-h em {
+      font-style: italic;
+      color: var(--golden-yellow);
+    }
+
+    .sec-p {
+      font-size: .92rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.85;
+      max-width: 480px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════ */
+    #about {
+      background: radial-gradient(ellipse 70% 60% at 20% 50%, rgba(216, 180, 254, 0.4), transparent);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stat-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border: 1px solid rgba(242, 169, 0, .12);
+      margin-top: 44px;
+    }
+
+    .stat-cell {
+      padding: 34px 30px;
+      /* Tinted Navy Glass — No longer whitish */
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(35, 65, 137, 0.15);
+      position: relative;
+      overflow: hidden;
+      transition: all .5s ease;
+    }
+
+    .stat-cell::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--white);
+      transform: scaleX(0);
+      background: var(--accent-orange);
+      transform-origin: left;
+      transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .stat-cell:hover {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 15px 45px rgba(124, 58, 237, 0.1);
+    }
+
+    .stat-cell:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: var(--golden-yellow);
+      line-height: 1;
+      margin-bottom: 5px;
+      letter-spacing: -2px;
+    }
+
+    .stat-lbl {
+      font-size: .7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--mist);
+      font-weight: 500;
+    }
+
+    .about-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 40px;
+    }
+
+    .acard {
+      padding: 26px 0;
+      border-top: 1px solid rgba(242, 169, 0, .1);
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+      transition: padding-left .4s ease;
+    }
+
+    .acard:hover {
+      padding-left: 10px;
+    }
+
+    .acard-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      color: var(--warm-orange);
+      font-weight: 700;
+      letter-spacing: -1px;
+      min-width: 32px;
+      margin-top: 2px;
+    }
+
+    .acard-t {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--navy-heading);
+      margin-bottom: 6px;
+    }
+
+    .acard-d {
+      font-size: .86rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HIGHTLIGHTS (3D Tilt Cinematic Cards)
+    ═══════════════════════════════════════════════ */
+    #highlights {
+      background: var(--sky-blue);
+      padding: 140px 0;
+      overflow: hidden;
+    }
+
+    .hl-head {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .hl-track {
+      display: grid;
+      grid-template-columns: repeat(2, 340px);
+      justify-content: center;
+      gap: 30px;
+      padding: 0 24px 80px;
+      perspective: 1500px;
+    }
+
+    .tilt-card-wrapper {
+      width: 340px;
+      height: 440px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    @keyframes cardHoverIn {
+      0%   { transform: translateY(0)    rotateY(0deg)  scale(1); }
+      100% { transform: translateY(-18px) rotateY(8deg) scale(1.04); }
+    }
+
+    @keyframes cardHoverOut {
+      0%   { transform: translateY(-18px) rotateY(8deg) scale(1.04); }
+      100% { transform: translateY(0)     rotateY(0deg) scale(1); }
+    }
+
+    .tilt-card {
+      width: 100%;
+      height: 100%;
+      background: var(--navy-heading);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      overflow: hidden;
+      will-change: transform;
+      /* Default state — no animation running */
+      transition: box-shadow 0.55s ease, border-color 0.55s ease;
+    }
+
+    /* Shine/Glow Effect */
+    .tilt-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--tx, 50%) var(--ty, 50%), rgba(255, 203, 6, 0.15), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Hover — subtle lift and tilt, class added by JS mouseenter */
+    .tilt-card.is-hovered {
+      animation: cardHoverIn 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 203, 6, 0.6);
+    }
+    .tilt-card.is-hovered::before { opacity: 1; }
+
+    /* Leave — smooth return, class added by JS mouseleave */
+    .tilt-card.is-leaving {
+      animation: cardHoverOut 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      box-shadow: none;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .tilt-card.is-leaving::before { opacity: 0; }
+
+    .tilt-n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.08);
+      /* Increased for visibility */
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      line-height: 1;
+      transform: translateZ(20px);
+    }
+
+    .tilt-icon {
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      transform: translateZ(50px);
+      display: inline-block;
+    }
+
+    .tilt-t {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      line-height: 1.1;
+      transform: translateZ(40px);
+    }
+
+    .tilt-d {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--light-cyan);
+      line-height: 1.7;
+      opacity: 0.85;
+      transform: translateZ(30px);
+    }
+
+    /* Glass texture overlay */
+    .glass-texture {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      #highlights {
+        padding: 80px 0;
+      }
+
+      .hl-head {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .hl-head p {
+        text-align: left !important;
+        margin-top: 15px;
+      }
+
+      .hl-track {
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding: 0 24px;
+        perspective: none;
+      }
+
+      .tilt-card-wrapper {
+        width: 100%;
+        height: auto;
+        min-height: 400px;
+      }
+
+      .tilt-card {
+        transform: none !important;
+        cursor: default;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       TIMELINE
+    ═══════════════════════════════════════════════ */
+    #timeline {
+      background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(216, 180, 254, 0.4), transparent);
+    }
+
+    .tl-wrap {
+      max-width: 960px;
+      margin: 70px auto 0;
+    }
+
+    .tl-row {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      align-items: stretch;
+      min-height: 130px;
+    }
+
+    .tl-l {
+      padding: 36px 44px 36px 0;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tl-r {
+      padding: 36px 0 36px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tl-spine {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sp-line {
+      flex: 1;
+      width: 1px;
+      background: var(--white-border);
+    }
+
+    .sp-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: var(--ink);
+      box-shadow: 0 0 10px rgba(242, 169, 0, .25);
+      flex-shrink: 0;
+      transition: background .4s ease, box-shadow .4s ease;
+    }
+
+    .tl-row:hover .sp-dot {
+      background: var(--warm-orange);
+      box-shadow: var(--gold-glow-sm);
+    }
+
+    .tl-step {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--warm-orange);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .tl-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--navy-heading);
+      margin-bottom: 8px;
+    }
+
+    .tl-desc {
+      font-size: .83rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      opacity: 0.85;
+      line-height: 1.7;
+    }
+
+    /* Even rows flip content to left side */
+    .tl-row.ev .tl-l {
+      order: 3;
+      text-align: left;
+      padding: 36px 0 36px 44px;
+    }
+
+    .tl-row.ev .tl-spine {
+      order: 2;
+    }
+
+    .tl-row.ev .tl-r {
+      order: 1;
+      text-align: right;
+      padding: 36px 44px 36px 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       REGISTRATION
+    ═══════════════════════════════════════════════ */
+    #register {
+      background: var(--ink-soft);
+    }
+
+    .reg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reg-note {
+      margin-top: 40px;
+      padding: 22px 26px;
+      /* Light Glass */
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .reg-note-t {
+      font-size: .67rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: 9px;
+    }
+
+    .reg-note-d {
+      font-size: .82rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      opacity: 0.85;
+      line-height: 1.7;
+    }
+
+    /* Form */
+    .form-box {
+      padding: 50px;
+      /* Premium Light Glass */
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 10px 40px rgba(27, 58, 87, 0.05);
+    }
+
+    .f-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .f-grp {
+      margin-bottom: 24px;
+    }
+
+    .f-lbl {
+      display: block;
+      font-size: .62rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      font-weight: 600;
+      margin-bottom: 9px;
+    }
+
+    .f-in {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(92, 127, 163, .4);
+      padding: 11px 0;
+      color: var(--charcoal);
+      font-family: 'Outfit', sans-serif;
+      font-size: .87rem;
+      font-weight: 600;
+      outline: none;
+      transition: border-color .4s ease;
+    }
+
+    .f-in::placeholder {
+      color: rgba(107, 114, 128, .6);
+    }
+
+    .f-in:focus {
+      border-color: var(--warm-orange);
+    }
+
+    .f-in.err {
+      border-color: #c0392b;
+    }
+
+    select.f-in {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B3A57' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      background-size: 10px;
+    }
+
+    select.f-in option {
+      background: var(--ink);
+    }
+
+    textarea.f-in {
+      resize: none;
+      border: 1px solid rgba(92, 127, 163, .4);
+      padding: 12px 14px;
+      min-height: 96px;
+    }
+
+    textarea.f-in:focus {
+      border-color: var(--warm-orange);
+    }
+
+    .f-err {
+      display: none;
+      font-size: .7rem;
+      color: #c0392b;
+      margin-top: 4px;
+      letter-spacing: .5px;
+    }
+
+    .f-err.show {
+      display: block;
+    }
+
+    .btn-sub {
+      width: 100%;
+      padding: 17px;
+      margin-top: 8px;
+      border: 1px solid var(--warm-orange);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--warm-orange);
+      font-family: 'Outfit', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      transition: all .5s ease;
+    }
+
+    .btn-sub::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--warm-orange);
+      z-index: -1;
+      transition: left .5s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .btn-sub:hover::before {
+      left: 0;
+    }
+
+    .btn-sub:hover {
+      color: var(--bg-white);
+      border-color: var(--warm-orange);
+      box-shadow: var(--gold-glow);
+    }
+
+    .btn-sub:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .spin {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid rgba(242, 169, 0, .3);
+      border-top-color: var(--warm-orange);
+      border-radius: 50%;
+      animation: spinning .9s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spinning {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .stat-msg {
+      display: none;
+      margin-top: 18px;
+      padding: 15px 20px;
+      font-size: .82rem;
+      font-weight: 400;
+      letter-spacing: .5px;
+    }
+
+    .stat-msg.ok {
+      border: 1px solid var(--white-border);
+      background: var(--card-light);
+      color: var(--accent-orange);
+    }
+
+    .stat-msg.fail {
+      border: 1px solid rgba(192, 57, 43, .3);
+      background: rgba(192, 57, 43, .05);
+      color: #e74c3c;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer {
+      padding: 58px 60px 38px;
+      border-top: 1px solid rgba(242, 169, 0, .1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 28px;
+    }
+
+    .footer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      letter-spacing: 8px;
+      color: var(--warm-orange);
+    }
+
+    .footer-r {
+      text-align: right;
+    }
+
+    .footer-org {
+      font-size: .72rem;
+      letter-spacing: 1px;
+      color: var(--mist);
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .footer-copy {
+      font-size: .64rem;
+      color: var(--ash);
+      margin-top: 7px;
+      letter-spacing: 1px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width:1024px) {
+      section {
+        padding: 90px 36px;
+      }
+
+      #nav {
+        padding: 22px 36px;
+      }
+
+      #nav.compact {
+        padding: 14px 36px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .hl-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .reg-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .tl-row {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .tl-l,
+      .tl-r {
+        text-align: left !important;
+        padding: 16px 0 !important;
+      }
+
+      .tl-row.ev .tl-l {
+        order: 1;
+        padding-left: 0 !important;
+      }
+
+      .tl-row.ev .tl-r {
+        order: 3;
+        text-align: left !important;
+        padding-right: 0 !important;
+      }
+
+      .tl-spine {
+        flex-direction: row;
+        height: 30px;
+      }
+
+      .sp-line {
+        width: 30px;
+        height: 1px;
+        flex: none;
+      }
+
+      footer {
+        padding: 38px 36px 28px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-r {
+        text-align: left;
+      }
+    }
+
+    @media (max-width:768px) {
+      #nav {
+        padding: 18px 24px;
+      }
+
+      #nav.compact {
+        padding: 12px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      section {
+        padding: 70px 24px;
+      }
+
+      .hl-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .hl-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .f-row {
+        grid-template-columns: 1fr;
+      }
+
+      .form-box {
+        padding: 30px 22px;
+      }
+
+      footer {
+        padding: 32px 24px 22px;
+      }
+
+      .hero-title {
+        letter-spacing: -1px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Premium Glass Orbs Asset Layer -->
+  <div class="glass-orb orb-1" data-speed="0.8"></div>
+  <div class="glass-orb orb-2" data-speed="1.2"></div>
+  <div class="glass-orb orb-3" data-speed="0.9"></div>
+
+  <!-- Progress bar -->
+  <div id="progress"></div>
+
+
+  <!-- ══════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-wordmark flex items-center gap-3">
+      <img src="./npr-logo-Photoroom.png" alt="NPR Logo" class="h-10 w-auto" />
+      <span class="hidden sm:inline">NPRCET <span
+          style="font-size:1.1rem; color:var(--warm-orange); opacity:0.5;">·</span> Nexplora</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#highlights">Highlights</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#venue">Venue</a></li>
+      <li><a href="#register" class="nav-cta">Register</a></li>
+    </ul>
+    <div class="hamburger" id="hamBtn" onclick="openMob()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Mobile full-screen menu -->
+  <div class="mob-menu" id="mobMenu">
+    <button class="mob-close" onclick="closeMob()">✕</button>
+    <a href="#about" onclick="closeMob()">About</a>
+    <a href="#highlights" onclick="closeMob()">Highlights</a>
+    <a href="#timeline" onclick="closeMob()">Timeline</a>
+    <a href="#venue" onclick="closeMob()">Venue</a>
+    <a href="#register" onclick="closeMob()">Register</a>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-lines"></div>
+    <div class="hero-decor" aria-hidden="true">
+      <img src="./background-logo-Photoroom.png" alt="" />
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow" id="hEye">
+        <span class="ey-line"></span>
+        <span class="ey-text" style="color: var(--navy-heading); opacity: 0.8;">NPRCET — Inter-College Hackathon
+          Presented by Elite Students</span>
+        <span class="ey-line r"></span>
+      </div>
+
+
+
+      <h1 class="hero-title" id="hTitle">
+        Nexplora
+      </h1>
+
+      <div class="hero-rule" id="hRule"></div>
+
+      <p class="hero-sub" id="hSub">Explore the Next &nbsp;·&nbsp; Build the Future</p>
+
+      <a href="#about" class="btn-gold" id="hCta">
+        Enter Experience
+        <span class="arrow-long"></span>
+      </a>
+    </div>
+
+    <div class="scroll-cue" id="hScroll">
+      <div class="sc-line"></div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+
+  <!-- ══════════════════════════════════════
+     ABOUT
+══════════════════════════════════════ -->
+  <section id="about">
+    <div class="about-grid">
+
+      <!-- Left -->
+      <div>
+        <div class="sec-eye" data-cin>The Event</div>
+        <h2 class="sec-h" data-cin>What is<br /><em>Nexplora?</em></h2>
+        <p class="sec-p" data-cin>
+          A 24-hour hackathon organized by the Elite Students of NPR College of Engineering and Technology — where
+          ambitious builders converge to shape what comes next.
+        </p>
+        <div class="stat-box" data-cin>
+          <div class="stat-cell">
+            <div class="stat-num">24</div>
+            <div class="stat-lbl">Hours</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">50+</div>
+            <div class="stat-lbl">Teams</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">₹1L</div>
+            <div class="stat-lbl">Prize Pool</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">∞</div>
+            <div class="stat-lbl">Ideas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div>
+        <div class="about-cards">
+          <div class="acard" data-cin>
+            <span class="acard-num">01</span>
+            <div>
+              <div class="acard-t">What is Nexplora?</div>
+              <div class="acard-d">A non-stop 24-hour build sprint tackling real-world problems across HealthTech,
+                AgriTech, EdTech, FinTech, and more — judged by industry experts.</div>
+            </div>
+          </div>
+          <div class="acard" data-cin>
+            <span class="acard-num">02</span>
+            <div>
+              <div class="acard-t">Eligibility & Participation</div>
+              <div class="acard-d">Open to UG students from all Engineering colleges. Form a team of 2–4 members and
+                compete with the brightest minds — Presented by Elite Students.</div>
+            </div>
+          </div>
+          <div class="acard" data-cin>
+            <span class="acard-num">03</span>
+            <div>
+              <div class="acard-t">Format & Duration</div>
+              <div class="acard-d">Day 1: Kickoff, problem reveal, 24-hour sprint with mentors. Day 2: Submissions, live
+                presentations, awards. Two days that change trajectories.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ══════════════════════════════════════
+     PARTNERS & ACCREDITATIONS
+══════════════════════════════════════ -->
+  <section id="accreditations" style="background:var(--ink-soft); padding:80px 24px;">
+    <div style="max-width:1200px; margin:0 auto; text-align:center;">
+      <h2 class="sec-h" style="color:var(--warm-orange); font-weight:600; font-size: 2.2rem; margin-bottom: 40px;"
+        data-cin>Partners & <em>Accreditations</em></h2>
+      <img src="./npr-logo-Photoroom.png" alt="NPR Accreditations and Partners"
+        style="max-width:100%; height:auto; display:block; margin:0 auto; box-shadow:0 10px 40px rgba(15,32,70,.1); border-radius:12px;"
+        data-cin />
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ══════════════════════════════════════
+     HIGHLIGHTS (3D Tilt Cinematic Cards)
+══════════════════════════════════════ -->
+  <section id="highlights">
+    <div class="hl-head">
+      <div>
+        <div class="sec-eye" data-cin>What Awaits</div>
+        <h2 class="sec-h" data-cin>Event <em>Highlights</em></h2>
+      </div>
+      <p class="sec-p" style="max-width:300px;text-align:right" data-cin>
+        Four defining experiences sculpted for elite builders.
+      </p>
+    </div>
+
+    <div class="hl-track" id="hlTrack">
+      <!-- Card 1 -->
+      <div class="tilt-card-wrapper">
+        <div class="tilt-card">
+          <div class="glass-texture"></div>
+          <div class="tilt-n">01</div>
+          <div class="tilt-icon">💡</div>
+          <h3 class="tilt-t">Innovative<br />Ideation</h3>
+          <p class="tilt-d">Bring out-of-the-box thinking. We are looking for creative, original, and groundbreaking
+            concepts that redefine the ordinary.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tilt-card-wrapper">
+        <div class="tilt-card">
+          <div class="glass-texture"></div>
+          <div class="tilt-n">02</div>
+          <div class="tilt-icon">🧠</div>
+          <h3 class="tilt-t">Real-world<br />Impact</h3>
+          <p class="tilt-d">Tackle industry-grade problem statements. Build practical solutions that address real pain
+            points and impact lives.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="tilt-card-wrapper">
+        <div class="tilt-card">
+          <div class="glass-texture"></div>
+          <div class="tilt-n">03</div>
+          <div class="tilt-icon">🤝</div>
+          <h3 class="tilt-t">Elite<br />Collaboration</h3>
+          <p class="tilt-d">Build alongside brilliant minds from colleges across India. Forge alliances and leave with a
+            network that outlasts the weekend.</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tilt-card-wrapper">
+        <div class="tilt-card">
+          <div class="glass-texture"></div>
+          <div class="tilt-n">04</div>
+          <div class="tilt-icon">💻</div>
+          <h3 class="tilt-t">Working<br />Prototypes</h3>
+          <p class="tilt-d">Concept to code in 24 hours. The ultimate goal is delivering a fully functional prototype
+            within the sprint.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+
+  <!-- ══════════════════════════════════════
+     TIMELINE
+══════════════════════════════════════ -->
+  <section id="timeline">
+    <div style="max-width:960px;margin:0 auto">
+      <div class="sec-eye" data-cin>Structure</div>
+      <h2 class="sec-h" data-cin>Event <em>Format</em></h2>
+      <p class="sec-p" data-cin>The journey from concept to code — mapped out in three definitive phases.</p>
+    </div>
+
+    <div class="tl-wrap">
+
+      <!-- Row 1 — content right -->
+      <div class="tl-row" data-tlrow>
+        <div class="tl-l" data-cin-l></div>
+        <div class="tl-spine">
+          <div class="sp-line"></div>
+          <div class="sp-dot"></div>
+          <div class="sp-line"></div>
+        </div>
+        <div class="tl-r" data-cin-r>
+          <div class="tl-step">Step 01</div>
+          <div class="tl-title">Online Idea Submission</div>
+          <div class="tl-desc">Register your team and submit your initial problem-solving idea or abstract before the
+            registration deadline to secure a spot.</div>
+        </div>
+      </div>
+
+      <!-- Row 2 — content left (ev) -->
+      <div class="tl-row ev" data-tlrow>
+        <div class="tl-l" data-cin-l>
+          <div class="tl-step">Step 02</div>
+          <div class="tl-title">Shortlisting Round</div>
+          <div class="tl-desc">Submitted ideas are reviewed by a panel, and the most promising and innovative teams are
+            selected to compete in the onsite sprint.</div>
+        </div>
+        <div class="tl-spine">
+          <div class="sp-line"></div>
+          <div class="sp-dot"></div>
+          <div class="sp-line"></div>
+        </div>
+        <div class="tl-r" data-cin-r></div>
+      </div>
+
+      <!-- Row 3 — content right -->
+      <div class="tl-row" data-tlrow>
+        <div class="tl-l" data-cin-l></div>
+        <div class="tl-spine">
+          <div class="sp-line"></div>
+          <div class="sp-dot"></div>
+          <div class="sp-line"></div>
+        </div>
+        <div class="tl-r" data-cin-r>
+          <div class="tl-step">Step 03</div>
+          <div class="tl-title">24-Hour Onsite Hackathon</div>
+          <div class="tl-desc">The main event begins. An intense 24-hour sprint where you code, build, and deploy a
+            working prototype with guidance from dedicated mentors.</div>
+        </div>
+      </div>
+
+      <div class="tl-r" data-cin-r></div>
+    </div>
+
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ══════════════════════════════════════
+     VENUE
+══════════════════════════════════════ -->
+  <section id="venue" style="background: radial-gradient(circle at 70% 50%, rgba(243, 232, 255, 0.6), transparent);">
+    <div style="max-width:1000px; margin:0 auto;">
+      <div class="sec-eye" style="justify-content:center;" data-cin>The Destination</div>
+      <h2 class="sec-h" style="text-align:center; margin-bottom:50px;" data-cin>The <em>Venue</em></h2>
+
+      <!-- Venue Info Card -->
+      <div class="form-box" style="padding:40px; text-align:left; position:relative; overflow:hidden;" data-cin>
+        <!-- Subtle Background Decoration -->
+        <div
+          style="position:absolute; top:-20px; right:-20px; font-size:10rem; opacity:0.04; pointer-events:none; transform: rotate(-15deg);">
+          📍</div>
+
+        <div style="display:flex; flex-direction:column; gap:25px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:20px;">
+            <div>
+              <div class="sec-eye" style="margin-bottom:10px;">Location</div>
+              <h3
+                style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem, 4vw, 2.4rem); font-weight:600; color:var(--navy-heading); line-height:1.1;">
+                NIC (Next-Gen <br />Innovation Center)</h3>
+            </div>
+            <div style="text-align:right;">
+              <div
+                style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:2px; color:var(--warm-orange); font-weight:700; text-transform:uppercase;">
+                Hackathon HQ</div>
+              <div style="font-size:0.8rem; color:var(--soft-gray); margin-top:5px;">Natham, Dindigul</div>
+            </div>
+          </div>
+
+          <div
+            style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:40px; align-items:center;">
+            <div>
+              <p style="font-size:0.95rem; color:var(--charcoal); opacity:0.85; line-height:1.8; margin-bottom:20px;">
+                Welcoming elite builders from various colleges, experience Nexplora at the <strong>NIC
+                  (Next-Gen Innovation Center)</strong>, located within the sprawling NPRCET campus. NIC provides a
+                sophisticated ecosystem with high-speed fiber connectivity, <strong>dedicated team desks with personal
+                  charging stations</strong>, and collaborative spaces designed for innovation.
+              </p>
+              <div style="border-top:1px solid rgba(124,58,237,0.1); padding-top:20px;">
+                <div style="font-size:0.85rem; color:var(--charcoal); margin-bottom:8px;">
+                  <span style="opacity:0.6;">Address:</span> <strong>NPR Nagar, Natham, Dindigul - 624401, Tamil
+                    Nadu.</strong>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div
+                style="padding:16px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px; text-align:center; transition: all 0.3s ease;">
+                <div style="font-size:1.5rem; margin-bottom:6px;">🏢</div>
+                <div
+                  style="font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); font-weight:700;">
+                  NIC Labs</div>
+              </div>
+              <div
+                style="padding:16px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px; text-align:center; transition: all 0.3s ease;">
+                <div style="font-size:1.5rem; margin-bottom:6px;">⚡</div>
+                <div
+                  style="font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); font-weight:700;">
+                  Charging Stations</div>
+              </div>
+              <div
+                style="padding:16px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px; text-align:center; transition: all 0.3s ease;">
+                <div style="font-size:1.5rem; margin-bottom:6px;">🪑</div>
+                <div
+                  style="font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); font-weight:700;">
+                  Team Desks</div>
+              </div>
+              <div
+                style="padding:16px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px; text-align:center; transition: all 0.3s ease;">
+                <div style="font-size:1.5rem; margin-bottom:6px;">🌐</div>
+                <div
+                  style="font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); font-weight:700;">
+                  Gigabit Wi-Fi</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:center; margin-top:10px;">
+            <a href="https://www.google.com/maps/search/NPR+College+of+Engineering+and+Technology" target="_blank"
+              class="nav-cta"
+              style="font-size:0.75rem; padding:12px 30px !important; text-decoration:none; text-transform:uppercase; letter-spacing:2px;">View
+              Venue on Maps</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Venue Gallery -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px; margin-top:50px;"
+        data-cin>
+        <!-- Image 1 -->
+        <div
+          style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(124,58,237,0.1); box-shadow:0 20px 40px rgba(0,0,0,0.1); background:var(--ink-soft); perspective: 1000px;">
+          <img src="./lab1.png" alt="NIC Innovation Lab 1"
+            style="width:100%; height:auto; display:block; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);"
+            onmouseover="this.style.transform='scale(1.1) rotate(1deg)'"
+            onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
+          <div
+            style="position:absolute; bottom:15px; left:15px; padding:6px 12px; background:rgba(255,255,255,0.8); backdrop-filter:blur(8px); border-radius:4px; font-size:0.6rem; letter-spacing:1px; font-weight:700; color:var(--navy-heading); text-transform:uppercase;">
+            Visionary Space</div>
+        </div>
+
+        <!-- Image 2 -->
+        <div
+          style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(124,58,237,0.1); box-shadow:0 20px 40px rgba(0,0,0,0.1); background:var(--ink-soft); perspective: 1000px;">
+          <img src="./lab2.png" alt="NIC Innovation Lab 2"
+            style="width:100%; height:auto; display:block; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);"
+            onmouseover="this.style.transform='scale(1.1) rotate(-1deg)'"
+            onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
+          <div
+            style="position:absolute; bottom:15px; left:15px; padding:6px 12px; background:rgba(255,255,255,0.8); backdrop-filter:blur(8px); border-radius:4px; font-size:0.6rem; letter-spacing:1px; font-weight:700; color:var(--navy-heading); text-transform:uppercase;">
+            Collaborative Hub</div>
+        </div>
+
+        <!-- Image 3 -->
+        <div
+          style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(124,58,237,0.1); box-shadow:0 20px 40px rgba(0,0,0,0.1); background:var(--ink-soft); perspective: 1000px;">
+          <img src="./lab3.png" alt="NIC Innovation Lab 3"
+            style="width:100%; height:auto; display:block; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);"
+            onmouseover="this.style.transform='scale(1.1) rotate(1deg)'"
+            onmouseout="this.style.transform='scale(1) rotate(0deg)'" />
+          <div
+            style="position:absolute; bottom:15px; left:15px; padding:6px 12px; background:rgba(255,255,255,0.8); backdrop-filter:blur(8px); border-radius:4px; font-size:0.6rem; letter-spacing:1px; font-weight:700; color:var(--navy-heading); text-transform:uppercase;">
+            Precision Tech</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ══════════════════════════════════════
+     REGISTRATION
+══════════════════════════════════════ -->
+  <section id="register">
+    <div style="max-width:800px; margin:0 auto; text-align:center;">
+      <div class="sec-eye" style="justify-content:center;" data-cin>Next Phase</div>
+      <h2 class="sec-h" data-cin>Registration is <em>Live</em></h2>
+      <p class="sec-p" style="margin:0 auto 50px; text-align:center;" data-cin>
+        The sprint continues. Secure your focus as we approach the next major milestone.
+      </p>
+
+      <div class="form-box" style="padding:50px 20px; text-align:center;" data-cin>
+        <!-- Dual Countdown Layout -->
+        <div style="display:grid; grid-template-columns:1fr; gap:50px;">
+
+          <!-- Registration Countdown -->
+          <div>
+            <div
+              style="font-size:0.7rem; letter-spacing:4px; text-transform:uppercase; color:var(--warm-orange); font-weight:700; margin-bottom:15px;">
+              Registration Deadline: April 5</div>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+              <div
+                style="min-width:70px; padding:12px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px;">
+                <div id="reg-days"
+                  style="font-family:'JetBrains Mono',monospace; font-size:1.8rem; font-weight:700; color:var(--navy-heading); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--soft-gray); margin-top:4px;">
+                  Days</div>
+              </div>
+              <div
+                style="min-width:70px; padding:12px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px;">
+                <div id="reg-hours"
+                  style="font-family:'JetBrains Mono',monospace; font-size:1.8rem; font-weight:700; color:var(--navy-heading); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--soft-gray); margin-top:4px;">
+                  Hours</div>
+              </div>
+              <div
+                style="min-width:70px; padding:12px; background:rgba(124,58,237,0.03); border:1px solid rgba(124,58,237,0.08); border-radius:4px;">
+                <div id="reg-mins"
+                  style="font-family:'JetBrains Mono',monospace; font-size:1.8rem; font-weight:700; color:var(--navy-heading); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--soft-gray); margin-top:4px;">
+                  Mins</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:50px; height:1px; background:rgba(124,58,237,0.1); margin:0 auto;"></div>
+
+          <!-- Hackathon Countdown -->
+          <div>
+            <div
+              style="font-size:0.7rem; letter-spacing:4px; text-transform:uppercase; color:var(--navy-heading); font-weight:700; margin-bottom:15px;">
+              Hackathon Kickoff: April 9</div>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+              <div
+                style="min-width:80px; padding:15px; background:var(--ink); border:1px solid var(--gold); border-radius:4px; box-shadow:var(--gold-glow-sm);">
+                <div id="hc-days"
+                  style="font-family:'JetBrains Mono',monospace; font-size:2.4rem; font-weight:700; color:var(--gold); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--mist); margin-top:5px;">
+                  Days</div>
+              </div>
+              <div
+                style="min-width:80px; padding:15px; background:var(--ink); border:1px solid var(--gold); border-radius:4px; box-shadow:var(--gold-glow-sm);">
+                <div id="hc-hours"
+                  style="font-family:'JetBrains Mono',monospace; font-size:2.4rem; font-weight:700; color:var(--gold); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--mist); margin-top:5px;">
+                  Hours</div>
+              </div>
+              <div
+                style="min-width:80px; padding:15px; background:var(--ink); border:1px solid var(--gold); border-radius:4px; box-shadow:var(--gold-glow-sm);">
+                <div id="hc-mins"
+                  style="font-family:'JetBrains Mono',monospace; font-size:2.4rem; font-weight:700; color:var(--gold); line-height:1;">
+                  00</div>
+                <div
+                  style="font-size:0.5rem; letter-spacing:1px; text-transform:uppercase; color:var(--mist); margin-top:5px;">
+                  Mins</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="margin-bottom:30px; font-size:0.82rem; color:var(--soft-gray); line-height:1.7;">
+          <span style="color:var(--navy-heading); font-weight:600;">Logistics:</span> Inter-college teams of 2–4 members
+          from any UG Engineering department.
+          <br />Registration Fee: <span style="color:var(--warm-orange); font-weight:600;">₹400 per Team</span>.
+          <span style="display:block; margin-top:8px; opacity:0.8;">Free Accommodation & Food will be provided during
+            the 24-hour event!</span>
+        </div>
+        <p class="sec-p" style="font-size:0.85rem; margin:0 auto 20px;">Ready to showcase your progress?</p>
+        <a href="#" class="btn-gold" style="padding:16px 32px;">Register</a>
+      </div>
+    </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+  <footer>
+    <div class="footer-mark flex items-center gap-4">
+      <img src="./npr-logo-Photoroom.png" alt="NPR Logo" class="h-12 w-auto" />
+      <span>Nexplora</span>
+    </div>
+    <div class="footer-r">
+      <div class="footer-org">
+        Inter-College Hackathon<br />
+        Presented by Elite Students & NPRCET
+      </div>
+      <div class="footer-copy">&copy; 2026 Nexplora · All Rights Reserved</div>
+    </div>
+  </footer>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* ─────────────────────────────────────
+       SCROLL RESTORATION — Always start at top
+    ───────────────────────────────────── */
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    /* ─────────────────────────────────────
+       API CONFIG — Replace before deploying
+    ───────────────────────────────────── */
+    const API_KEY = "YOUR_API_KEY_HERE";
+    const API_ENDPOINT = "https://api.example.com/register";
+
+    /* ─────────────────────────────────────
+       GSAP REGISTRATION
+    ───────────────────────────────────── */
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ─────────────────────────────────────
+       SCROLL PROGRESS
+    ───────────────────────────────────── */
+    const prog = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const p = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+      prog.style.width = p + '%';
+    });
+
+    /* ─────────────────────────────────────
+       NAVBAR COMPACT
+    ───────────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('compact', window.scrollY > 60));
+
+    /* ─────────────────────────────────────
+       MOBILE MENU
+    ───────────────────────────────────── */
+    const mob = document.getElementById('mobMenu');
+    function openMob() { mob.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMob() { mob.classList.remove('open'); document.body.style.overflow = ''; }
+
+    /* ─────────────────────────────────────
+       SMOOTH SCROLL HANDLER
+       For better integration with GSAP pinned sections
+    ───────────────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const target = document.querySelector(targetId);
+        if (target) {
+          // If it's a mobile link, close the menu first
+          if (this.closest('.mob-menu')) {
+            closeMob();
+          }
+
+          gsap.to(window, {
+            duration: 1.8,
+            scrollTo: {
+              y: target,
+              autoKill: false
+            },
+            ease: "expo.inOut"
+          });
+        }
+      });
+    });
+
+    /* ─────────────────────────────────────
+       HERO CANVAS — Gold particle field
+       Slow drifting dots with connection lines
+    ───────────────────────────────────── */
+    /* OLD CANVAS SYSTEM REMOVED to prevent conflict with the Cinematic Interactive Canvas at the bottom */
+
+    /* ─────────────────────────────────────
+       PARALLAX — hero layers on scroll
+    ───────────────────────────────────── */
+    const decorEl = document.querySelector('.hero-decor');
+    const oldCanvasRef = document.getElementById('hero-canvas');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (oldCanvasRef) oldCanvasRef.style.transform = `translateY(${y * .28}px)`;
+      if (decorEl) decorEl.style.transform = `translate(-50%, calc(-50% + ${y * .18}px))`;
+    });
+
+    /* ─────────────────────────────────────
+       GSAP — HERO ENTRANCE
+       Fast modern stagger
+    ───────────────────────────────────── */
+    gsap.set(['#hEye', '#hTitle', '#hSub', '#hCta', '#hScroll'], { opacity: 0, y: 24 });
+    gsap.set('#hRule', { width: 0, opacity: 0 });
+
+    gsap.timeline({ delay: .1 })
+      .to('#hEye', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+      .to('#hTitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=.4')
+      .to('#hRule', { opacity: 1, width: '55%', duration: 0.6, ease: 'power2.inOut' }, '-=.4')
+      .to('#hSub', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=.3')
+      .to('#hCta', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '-=.3')
+      .to('#hScroll', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '-=.2');
+
+    /* ─────────────────────────────────────
+       GSAP — SCROLL REVEALS
+       Fast modern upward fade (0.6s per el)
+    ───────────────────────────────────── */
+    function cinReveal(attr, fromX, fromY) {
+      document.querySelectorAll(`[${attr}]`).forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, x: fromX || 0, y: fromY || 0 },
+          {
+            opacity: 1, x: 0, y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            delay: (i % 3) * 0.08,
+            scrollTrigger: {
+              trigger: el, start: 'top 87%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+      });
+    }
+    cinReveal('data-cin', 0, 30);
+    cinReveal('data-cin-l', -38, 0);
+    cinReveal('data-cin-r', 38, 0);
+
+    /* ─────────────────────────────────────
+       3D TILT CARDS LOGIC
+       Uses mouseenter/mouseleave (fires once per hover session)
+       instead of CSS :hover (re-fires on child element transitions)
+    ───────────────────────────────────── */
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.classList.remove('is-leaving');
+        card.classList.add('is-hovered');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('is-hovered');
+        card.classList.add('is-leaving');
+        // Clean up leaving class after animation finishes (0.5s)
+        setTimeout(() => {
+          if (!card.classList.contains('is-hovered')) {
+            card.classList.remove('is-leaving');
+          }
+        }, 500);
+      });
+
+      // Live shine gradient follows cursor
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+        const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+        card.style.setProperty('--tx', x + '%');
+        card.style.setProperty('--ty', y + '%');
+      });
+    });
+
+    /* ─────────────────────────────────────
+       GSAP — SCROLL ENTRANCE REVEAL
+    ───────────────────────────────────── */
+    const tiltCardsWrappers = document.querySelectorAll('.tilt-card-wrapper');
+    if (tiltCardsWrappers.length) {
+      gsap.from(tiltCardsWrappers, {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+        duration: 1.2,
+        ease: "power3.out",
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: '.hl-track',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
+
+    /* ─────────────────────────────────────
+       GSAP — PARALLAX ORBS
+    ───────────────────────────────────── */
+    gsap.utils.toArray('.glass-orb').forEach(orb => {
+      const speed = orb.getAttribute('data-speed');
+      gsap.to(orb, {
+        y: () => (ScrollTrigger.maxScroll(window) * (1 - speed)),
+        ease: "none",
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.5
+        }
+      });
+    });
+
+    /* ─────────────────────────────────────
+       DUAL COUNTDOWN LOGIC
+    ───────────────────────────────────── */
+    const regTarget = new Date("April 5, 2026 23:59:59").getTime();
+    const hcTarget = new Date("April 9, 2026 09:00:00").getTime();
+
+    function updateTimers() {
+      const now = new Date().getTime();
+      const pad = (n) => n.toString().padStart(2, '0');
+
+      // Registration Timer
+      const regDist = regTarget - now;
+      if (regDist > 0) {
+        document.getElementById('reg-days').innerText = pad(Math.floor(regDist / (1000 * 60 * 60 * 24)));
+        document.getElementById('reg-hours').innerText = pad(Math.floor((regDist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        document.getElementById('reg-mins').innerText = pad(Math.floor((regDist % (1000 * 60 * 60)) / (1000 * 60)));
+      } else {
+        document.getElementById('reg-days').innerText = "00";
+      }
+
+      // Hackathon Timer
+      const hcDist = hcTarget - now;
+      if (hcDist > 0) {
+        document.getElementById('hc-days').innerText = pad(Math.floor(hcDist / (1000 * 60 * 60 * 24)));
+        document.getElementById('hc-hours').innerText = pad(Math.floor((hcDist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        document.getElementById('hc-mins').innerText = pad(Math.floor((hcDist % (1000 * 60 * 60)) / (1000 * 60)));
+      } else {
+        document.getElementById('hc-days').innerText = "00";
+      }
+    }
+
+    setInterval(updateTimers, 1000);
+    updateTimers();
+
+    /* ─────────────────────────────────────
+       MAGNETIC BUTTONS (Premium Micro-Interaction)
+    ───────────────────────────────────── */
+    const magneticEls = document.querySelectorAll('.btn-gold, .nav-cta');
+    magneticEls.forEach(el => {
+      el.addEventListener('mousemove', function (e) {
+        const position = el.getBoundingClientRect();
+        const x = e.clientX - position.left - position.width / 2;
+        const y = e.clientY - position.top - position.height / 2;
+        el.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+      });
+      el.addEventListener('mouseout', function (e) {
+        el.style.transform = 'translate(0px, 0px)';
+      });
+    });
+
+    /* ─────────────────────────────────────
+       CINEMATIC INTERACTIVE CANVAS (Geometric)
+    ───────────────────────────────────── */
+    const canvas = document.getElementById('hero-canvas');
+    const ctx = canvas.getContext('2d');
+    let canvasWidth, canvasHeight;
+    let particles = [];
+    let mouse = { x: -9999, y: -9999 };
+    const shapes = ['circle', 'ring', 'triangle'];
+    const colors = ['rgba(124, 58, 237, 0.08)', 'rgba(167, 139, 250, 0.12)', 'rgba(255, 255, 255, 0.4)'];
+
+    function initCanvas() {
+      canvasWidth = canvas.width = window.innerWidth;
+      const heroEl = document.getElementById('hero');
+      canvasHeight = canvas.height = heroEl ? heroEl.offsetHeight : window.innerHeight;
+      particles = [];
+      const particleCount = window.innerWidth < 768 ? 15 : 25; // Fewer, bolder elements
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvasWidth,
+          y: Math.random() * canvasHeight,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: (Math.random() - 0.5) * 0.8,
+          radius: Math.random() * 35 + 15, // Large 15px to 50px shapes
+          shape: shapes[Math.floor(Math.random() * shapes.length)],
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * Math.PI * 2,
+          vrot: (Math.random() - 0.5) * 0.02
+        });
+      }
+    }
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.vrot;
+
+        // Wrap around edges smoothly
+        if (p.x < -60) p.x = canvasWidth + 60;
+        if (p.x > canvasWidth + 60) p.x = -60;
+        if (p.y < -60) p.y = canvasHeight + 60;
+        if (p.y > canvasHeight + 60) p.y = -60;
+
+        // Premium Mouse avoidance (Repulsion)
+        let dx = mouse.x - p.x;
+        let dy = mouse.y - p.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 220) {
+          p.x -= dx * Math.max(0, (220 - dist) * 0.0003);
+          p.y -= dy * Math.max(0, (220 - dist) * 0.0003);
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+
+        if (p.shape === 'circle') {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (p.shape === 'ring') {
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = p.radius * 0.25;
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius * 0.8, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (p.shape === 'triangle') {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.moveTo(0, -p.radius);
+          ctx.lineTo(p.radius * 0.866, p.radius * 0.5);
+          ctx.lineTo(-p.radius * 0.866, p.radius * 0.5);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      requestAnimationFrame(drawCanvas);
+    }
+
+    window.addEventListener('resize', initCanvas);
+
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      heroSection.addEventListener('mouseleave', () => {
+        mouse.x = -9999;
+        mouse.y = -9999;
+      });
+    }
+
+    // Initialize Geometric Canvas
+    initCanvas();
+    drawCanvas();
+
+  </script>
+</body>
+
+</html>
