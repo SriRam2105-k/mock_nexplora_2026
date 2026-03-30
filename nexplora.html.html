@@ -37,49 +37,41 @@
        DESIGN TOKENS
     ═══════════════════════════════════════════════ */
     :root {
-      /* NPR Logo Colors - Kept for reference but theme uses Lavender */
-      --npr-navy: #234189;
-      --npr-gold: #FFCB06;
-      --npr-bg: #FAF5FF;
-      /* Lavender White */
-      --npr-light-blue: #E9D5FF;
-      /* Light Lavender */
-
-      /* Lavender Background Base */
-      --sky-blue: #FAF5FF;
-      /* Soft Lavender Highlights */
-      --light-cyan: #F3E8FF;
-      /* Deep Purple Headings */
+      /* 🎨 NEXPLORA 2026 README COLOR PALETTE */
+      /* Primary Theme */
+      --vibrant-purple: #7C3AED;
+      --soft-lavender: #8B5CF6;
       --navy-heading: #4B2393;
 
-      /* Vibrant Purple (Main Titles) */
-      --vibrant-purple: #7C3AED;
-      /* Soft Lavender (Buttons / Secondary) */
-      --soft-lavender: #8B5CF6;
-      /* Pale Lavender (Highlights) */
+      /* Backgrounds */
+      --ink: #FAF5FF;
       --pale-lavender: #F3E8FF;
-
-      /* Pure White (Cards / Boxes) */
       --dark-slate: #FFFFFF;
-      /* Lavender Border */
-      --steel-blue: #DDD6FE;
-      /* Very Light Gray/Lavender (Card Backgrounds) */
-      --light-gray: #F9FAFB;
 
-      /* White Pure */
-      --bg-white: #FFFFFF;
-      /* Deep Charcoal (Body Text) */
+      /* Accents/Borders */
+      --steel-blue: #DDD6FE;
+
+      /* Typography */
       --charcoal: #1F2937;
-      /* Muted Gray (Subtext) */
       --soft-gray: #6B7280;
 
-      /* Mapping aliases for the HTML references */
+      /* Mappings for layout consistency */
+      --sky-blue: var(--ink);
+      --light-cyan: var(--pale-lavender);
+      --bg-white: var(--dark-slate);
+      --light-gray: #F9FAFB;
+
+      /* Map legacy names to new README colors */
+      --golden-yellow: var(--vibrant-purple);
+      --warm-orange: var(--soft-lavender);
+      --accent-orange: var(--soft-lavender);
+
+      /* Core HTML element aliases */
       --gold: var(--vibrant-purple);
       --gold-light: var(--soft-lavender);
       --gold-pale: var(--pale-lavender);
       --gold-dim: rgba(124, 58, 237, 0.1);
 
-      --ink: var(--sky-blue);
       --ink-soft: var(--dark-slate);
 
       --ash: var(--soft-gray);
